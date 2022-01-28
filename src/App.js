@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  // XXX as Router已被替换
+  HashRouter,
+  Routes, //Switch已改名为Routes
+  Route,
+  // Navigate V6使用Navigate代替Redirect进行重定向
+} from 'react-router-dom'
+import { Suspense, lazy } from 'react'
+const Home = lazy(() => import('./pages/Home'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 function App() {
+
+  const fallbackShow = () => {
+    return
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <HashRouter>
+      <Suspense fallback={fallbackShow}>
+        <Routes>
+          <Route path="/Home" element={<Home />}></Route>
+          {/* 重定向到首页 */}
+          {/* <Route path="*" element={<Navigate to="/" />}></Route> */}
+          {/* 跳转到NotFound */}
+          <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+      </Suspense>
+    </HashRouter>
+  )
 }
 
 export default App;
